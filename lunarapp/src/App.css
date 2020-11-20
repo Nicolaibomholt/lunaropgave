@@ -1,0 +1,35 @@
+.itemInList {
+ width: 100%;
+}
+
+label {
+
+}
+
+.iconImage {
+  max-width: 3%;
+}
+
+figure {
+  text-align: center;
+  display: inline-block;
+  max-width: 100px;
+  vertical-align: top;
+  margin:10px;
+}
+
+.parent {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: ;
+  grid-column-gap: 16px;
+  grid-row-gap: 1px;
+  }
+  
+  .div1 { grid-area: 1 / 1 / 2 / 2; }
+  .div2 { grid-area: 1 / 2 / 2 / 3; }
+  .div3 { grid-area: 1 / 3 / 2 / 4; }
+  .div4 { grid-area: 1 / 4 / 2 / 5; }
+  .div5 { grid-area: 1 / 5 / 2 / 6; }
+  .div6 { grid-area: 1 / 6 / 2 / 7; }
+  .div7 { grid-area: 1 / 7 / 2 / 8; }
