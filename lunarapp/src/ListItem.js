@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import data from './data.json'
 import React, { useContext, useState, useEffect } from "react";
+import { Button } from 'react-bootstrap'
 
 const tranaction = [{
     "id": "0ed6c015-ea38-465e-9323-bafae969baea",
@@ -21,16 +22,112 @@ const tranaction = [{
 }
 ]
 
-function ListItem(data) {
+
+const handleImage = (image) => {
+    if (image == "https://api.dev.lunarway.com/storage/49485e1b-26d6-4014-bddc-2a7b62d5dbc6/redirect" || image == "https://api.dev.lunarway.com/user/avatar/541eb61e-0317-4e45-831f-35a28e036b52/thumbnail") {
+        image = "https://s3-eu-west-1.amazonaws.com/lunarway-dev-cdn/pfm/category_other.png"
+        return image
+    }
+    else {
+        return image
+    }
+}
+
+const handleDate = (date) => {
+    let tempDate = new Date(date);
+    date = ("0" + tempDate.getDate()).slice(-2) + "/" + ("0" + (tempDate.getMonth() + 1)).slice(-2) + "/" + tempDate.getFullYear().toString().substr(-2) + " " + ("0" + tempDate.getHours()).slice(-2) + ":" + ("0" + tempDate.getMinutes()).slice(-2);
+    return date
+}
+
+const handleAmount = (amount, currency) => {
+
+    if (parseInt(amount) <= -1) {
+        amount = amount + ",00"
+    }
+    if (parseInt(amount) >= 100) {
+        amount = amount + ",00"
+    }
+    let formattedAmount = "";
+    formattedAmount = amount + " " + currency
+    return formattedAmount
+}
+
+const handleStyleAmount = (amount) => {
+    const style1 = {
+        color: "red"
+    }
+    const style2 = {
+        color: "black"
+    }
+    if (amount < 0) {
+        return style1
+    }
+    return style2
+}
+
+const handleStyleStatus = (status) => {
+    let colorString = "";
+    switch (status) {
+        case "future":
+            return "#007bff"
+            break;
+        case "financial":
+            return "darkseagreen"    
+            break;
+        case "authorization":
+            return "#ffc107"
+            break;
+    }
+
+}
+
+const onLoadDiv = (id) => {
+    var div = document.getElementById(id);
+    div.style.visibility = "hidden"
+}
+
+const mouseOverDiv = (id) => {
+    var div = document.getElementById(id);
+    div.style.visibility = "visible"
+}
+
+const mouseOutDiv = (id) => {
+    var div = document.getElementById(id);
+    div.style.visibility = "hidden"
+}
+
+
+function ListItem({ data, handleClick, handleDivClick, showDelete, handleShow }) {
+    if (data.deleted !== null) {
+        return (
+            <div className="parent" style={{ opacity: '40%', textAlign: "center" }}>
+                <div>
+                    <button onClick={handleDivClick} style={{ borderRadius: "10px", width: '40%', marginRight: '100%' }}><img className="div1" src={handleImage(data.iconURL)} style={{ maxWidth: '100%' }}></img></button>
+                </div>
+                <p className="div2">{data.type}</p>
+                <p className="div3">{data.localizableTitle}</p>
+                <p className="div4" style={handleStyleAmount(data.billingAmount.amount)}> {handleAmount(data.billingAmount.amount, data.billingAmount.currency)}</p>
+                <p className="div5">{handleDate(data.time)}</p>
+                <div className="div6">
+                    <p style={{ margin: 'auto', borderRadius: '10px', background: handleStyleStatus(data.status), padding: '2px'}}>{data.status}</p>
+                    <span style={{ width: '10px' }}></span>
+                    <p className="labelDeleted" style={{ margin: 'auto', borderRadius: '10px', background: '#ff0018', color: 'white', padding: '2px'}}> Deleted</p>
+                </div>
+                <img className="div7" src={data.categoryIconUrl} style={{ maxWidth: '60px' }}></img>
+                <Button hidden={true} id = {data.id} variant="danger" disabled={true} className="div8" onClick={handleClick} style={{ maxWidth: '50px', maxHeight: '50px' }}>X</Button>
+            </div>
+        )
+    }
     return (
-        <div className="parent">
-            <img className="div1" src={data.data.iconURL} style= {{maxWidth: '25px'}}></img>
-            <p className="div2">{data.data.type}</p>
-            <p className="div3">{data.data.localizableTitle}</p>
-            <p className="div4"> {data.data.billingAmount.amount} {data.data.billingAmount.currency}</p>
-            <p className="div5">{data.data.time}</p>
-            <p className="div6">{data.data.status}</p>
-            <img className ="div7" src={data.data.categoryIconUrl} style= {{maxWidth: '25px'}}></img>
+        <div onLoad =  {() => onLoadDiv(data.id)} className="parent" style={{ textAlign: "center" }} onMouseOver = {() => mouseOverDiv(data.id)} onMouseLeave = {() => mouseOutDiv(data.id)}>
+            <button onClick={handleDivClick} style={{ borderRadius: "inherit", maxWidth: '40%' }}><img className="div1" src={handleImage(data.iconURL)} style={{ maxWidth: '100%' }}></img></button>
+            <p className="div2">{data.type}</p>
+            <p className="div3">{data.localizableTitle}</p>
+            <p className="div4" style={handleStyleAmount(data.billingAmount.amount)}> {handleAmount(data.billingAmount.amount, data.billingAmount.currency)}</p>
+            <p className="div5">{handleDate(data.time)}</p>
+            <p className="div6" style = {{background: handleStyleStatus(data.status)}}>{data.status}</p>
+            <img className="div7" src={data.categoryIconUrl} style={{ maxWidth: '60px' }}></img>
+            <Button id = {data.id} variant="danger" className="div8" onClick={handleClick} style={{ maxWidth: '50px', maxHeight: '50px' }}>X</Button>
         </div>
     );
 }
