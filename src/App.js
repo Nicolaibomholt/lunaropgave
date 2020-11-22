@@ -13,7 +13,7 @@ function App() {
 
 
   const [transactionArray, setTransactionArray] = useState(data.data.transactions);
-  const [toggleTypeTitle, setToggleTypeTitle] = useState("Type");
+  const [toggleTypeTitle, setToggleTypeTitle] = useState("Sort by type");
   const [toggleTitleTitle, setToggleTitleTitle] = useState("Title");
   const [toggleAmountTitle, setToggleAmountTitle] = useState("Amount");
   const [toggleDateTitle, setToggleDateTitle] = useState("Date");
@@ -95,23 +95,25 @@ function App() {
     }
 
   }
-  const sortByType = () => {
-    setIsToggledType(!isToggledType);
-    if (isToggledType) {
-      setToggleTypeTitle("Type, asc.")
-      const sorted = [...transactionArray].sort((a, b) => {
-        return a.type.localeCompare(b.type);
+  const sortByType = (evt) => {
+    let tempArray = data.data.transactions;
+    let sortedArray = [];
+    console.log(evt);
+    if (evt !== "clear") {
+      tempArray.forEach(element => {
+        if (element.type == evt) {
+          console.log(element.type);
+          sortedArray.push(element)
+        }
       });
-      setTransactionArray(sorted);
-
+      console.log(tempArray);
+     
     }
     else {
-      setToggleTypeTitle("Type, dsc.")
-      const sorted = [...transactionArray].sort((a, b) => {
-        return b.type.localeCompare(a.type);
-      });
-      setTransactionArray(sorted);
+      sortedArray = tempArray;
     }
+    setTransactionArray(sortedArray);
+    
   }
   const sortByTitle = () => {
     setIsToggledTitle(!isToggledTitle);
@@ -170,14 +172,14 @@ function App() {
       <h1>LUNAR APP</h1>
       <div className="parent" style={{ height: '50px', marginBottom: '' }}>
         <button hidden={true} className="div1">x</button>
-        <Dropdown className ="div2" style = {{borderRadius: 'inherit'}} >
-          <Dropdown.Toggle variant="primary" id="dropdown-basic">
+        <Dropdown className ="div2" style = {{borderRadius: 'inherit', width: "100%"}} onSelect = {(evt) => sortByType(evt)}>
+          <Dropdown.Toggle variant="primary" id="dropdown-basic" style = {{width: '100%'}}>
             {toggleTypeTitle}
         </Dropdown.Toggle>
           <Dropdown.Menu>
-            <Dropdown.Item eventKey = "account">Account</Dropdown.Item>
-            <Dropdown.Item eventKey = "card">Card</Dropdown.Item>
-            <Dropdown.Item eventKey = "clear">Clear</Dropdown.Item>
+            <Dropdown.Item eventKey = "account" onClick = {() => setToggleTypeTitle("Account")}>Account</Dropdown.Item>
+            <Dropdown.Item eventKey = "card" onClick = {() => setToggleTypeTitle("Card")}>Card</Dropdown.Item>
+            <Dropdown.Item eventKey = "clear" onClick = {() => setToggleTypeTitle("None")}>None</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
         <Button className="div3" onClick={() => sortByTitle()} style={{ display: "block", width: '100%' }}>{toggleTitleTitle}</Button>
@@ -245,7 +247,7 @@ function App() {
 
         </Modal.Footer>
       </Modal>
-      {loading && <Spinner animation="border" variant="primary" loading={false} />}
+      {loading && <Spinner animation="border" variant="primary" />}
 
     </div>
   );
