@@ -70,7 +70,7 @@ function App() {
   const handleSelectItem = (transaction) => {
     setSelectedTransaction(transaction);
     setTimeout(() => {
-      
+
     })
     setModalInfoShow(!modalInfoShow);
   }
@@ -217,7 +217,7 @@ function App() {
         </Container>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={() => setModalInfoShow(false)}>Close</Button>
+        <Button variant ="secondary" onClick={() => setModalInfoShow(false)}>Close</Button>
       </Modal.Footer>
       </Modal>
 
@@ -230,7 +230,7 @@ function App() {
           <Button variant="secondary" onClick={() =>setModalDeleteShow(false)}>
             Close
           </Button>
-          <Button variant="secondary" onClick={() =>deleteTransAction(selectedIndexForDelete)}>
+          <Button variant="danger" onClick={() =>deleteTransAction(selectedIndexForDelete)}>
             Delete
           </Button>
           

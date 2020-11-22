@@ -72,10 +72,10 @@ const handleStyleStatus = (status) => {
             return "#007bff"
             break;
         case "financial":
-            return "darkseagreen"    
+            return "#78f892"    
             break;
         case "authorization":
-            return "#ffc107"
+            return "#eb8e00"
             break;
     }
 
@@ -102,7 +102,7 @@ function ListItem({ data, handleClick, handleDivClick, showDelete, handleShow })
         return (
             <div className="parent" style={{ opacity: '40%', textAlign: "center" }}>
                 <div>
-                    <button onClick={handleDivClick} style={{ borderRadius: "10px", width: '40%', marginRight: '100%' }}><img className="div1" src={handleImage(data.iconURL)} style={{ maxWidth: '100%' }}></img></button>
+                   <img className="div1" src={handleImage(data.iconURL)} style={{ maxWidth: '60px', marginRight: '100%'}}></img>
                 </div>
                 <p className="div2">{data.type}</p>
                 <p className="div3">{data.localizableTitle}</p>
@@ -120,14 +120,17 @@ function ListItem({ data, handleClick, handleDivClick, showDelete, handleShow })
     }
     return (
         <div onLoad =  {() => onLoadDiv(data.id)} className="parent" style={{ textAlign: "center" }} onMouseOver = {() => mouseOverDiv(data.id)} onMouseLeave = {() => mouseOutDiv(data.id)}>
-            <button onClick={handleDivClick} style={{ borderRadius: "inherit", maxWidth: '40%' }}><img className="div1" src={handleImage(data.iconURL)} style={{ maxWidth: '100%' }}></img></button>
+            <img className="div1" src={handleImage(data.iconURL)} style={{ maxWidth: '60px'}}/>
             <p className="div2">{data.type}</p>
             <p className="div3">{data.localizableTitle}</p>
             <p className="div4" style={handleStyleAmount(data.billingAmount.amount)}> {handleAmount(data.billingAmount.amount, data.billingAmount.currency)}</p>
             <p className="div5">{handleDate(data.time)}</p>
             <p className="div6" style = {{background: handleStyleStatus(data.status)}}>{data.status}</p>
             <img className="div7" src={data.categoryIconUrl} style={{ maxWidth: '60px' }}></img>
-            <Button id = {data.id} variant="danger" className="div8" onClick={handleClick} style={{ maxWidth: '50px', maxHeight: '50px' }}>X</Button>
+            <div className="div8" id = {data.id} style = {{display: "flex"}}>
+            <Button variant="primary"  onClick={handleDivClick} style={{ maxWidth: '50px', maxHeight: '50px' }}> ?</Button>
+            <Button variant="danger"  onClick={handleClick} style={{ maxWidth: '50px', maxHeight: '50px' }}>X</Button>
+            </div>
         </div>
     );
 }
