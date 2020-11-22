@@ -4,7 +4,7 @@ import './index.css'
 import data from './data.json'
 import React, { useContext, useState, useEffect } from "react";
 import ListItem from './ListItem';
-import {Col, Row, Modal, Button, Container, Spinner} from 'react-bootstrap'
+import { Col, Row, Modal, Button, Container, Spinner, Dropdown } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -91,7 +91,7 @@ function App() {
         return b.billingAmount.amount - a.billingAmount.amount
       });
       setTransactionArray(sorted);
-       //do sort amount descending
+      //do sort amount descending
     }
 
   }
@@ -103,7 +103,7 @@ function App() {
         return a.type.localeCompare(b.type);
       });
       setTransactionArray(sorted);
-      
+
     }
     else {
       setToggleTypeTitle("Type, dsc.")
@@ -168,13 +168,22 @@ function App() {
   return (
     <div className="App">
       <h1>LUNAR APP</h1>
-      <div className="parent" style={{ height: '50px', marginBottom: ''}}>
+      <div className="parent" style={{ height: '50px', marginBottom: '' }}>
         <button hidden={true} className="div1">x</button>
-        <Button className="div2" onClick={() => sortByType()} style ={{display: "block", width: '100%'}}>{toggleTypeTitle}</Button>
-        <Button className="div3" onClick={() => sortByTitle()} style ={{display: "block", width: '100%'}}>{toggleTitleTitle}</Button>
-        <Button className="div4" onClick={() => sortByAmount()} style ={{display: "block", width: '100%'}}>{toggleAmountTitle}</Button>
-        <Button className="div5" onClick={() => sortByDate()} style ={{display: "block", width: '100%'}}>{toggleDateTitle}</Button>
-        <Button className="div6" onClick={() => sortByStatus()} style ={{display: "block", width: '100%'}}>{toggleStatusTitle}</Button>
+        <Dropdown className ="div2" style = {{borderRadius: 'inherit'}} >
+          <Dropdown.Toggle variant="primary" id="dropdown-basic">
+            {toggleTypeTitle}
+        </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item eventKey = "account">Account</Dropdown.Item>
+            <Dropdown.Item eventKey = "card">Card</Dropdown.Item>
+            <Dropdown.Item eventKey = "clear">Clear</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+        <Button className="div3" onClick={() => sortByTitle()} style={{ display: "block", width: '100%' }}>{toggleTitleTitle}</Button>
+        <Button className="div4" onClick={() => sortByAmount()} style={{ display: "block", width: '100%' }}>{toggleAmountTitle}</Button>
+        <Button className="div5" onClick={() => sortByDate()} style={{ display: "block", width: '100%' }}>{toggleDateTitle}</Button>
+        <Button className="div6" onClick={() => sortByStatus()} style={{ display: "block", width: '100%' }}>{toggleStatusTitle}</Button>
         <button hidden={true} className="div7">x</button>
         <button hidden={true} className="div8">x</button>
       </div>
@@ -185,59 +194,59 @@ function App() {
           )
         }
       })}
-      <Modal show={modalInfoShow} onHide={() =>setModalInfoShow(false)}>
+      <Modal show={modalInfoShow} onHide={() => setModalInfoShow(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Showing information on transaction ID: {selectedTransAction && selectedTransAction.id}</Modal.Title>
         </Modal.Header>
         <Modal.Body className="show-grid">
-        <Container>
-          <Row>
-            <Col xs={6} md={4}>
-              Type: {selectedTransAction && selectedTransAction.type}
-            </Col>
-            <Col xs={6} md={4}>
-              Title: {selectedTransAction && selectedTransAction.localizableTitle}
-            </Col>
-            <Col xs={6} md={4}>
-              Category: {selectedTransAction && selectedTransAction.categoryID}
-            </Col>
-          </Row>
+          <Container>
+            <Row>
+              <Col xs={6} md={4}>
+                Type: {selectedTransAction && selectedTransAction.type}
+              </Col>
+              <Col xs={6} md={4}>
+                Title: {selectedTransAction && selectedTransAction.localizableTitle}
+              </Col>
+              <Col xs={6} md={4}>
+                Category: {selectedTransAction && selectedTransAction.categoryID}
+              </Col>
+            </Row>
 
-          <Row>
-            <Col xs={6} md={4}>
-              Billing amount: {selectedTransAction && selectedTransAction.billingAmount.amount + selectedTransAction.billingAmount.currency}
-            </Col>
-            <Col xs={6} md={4}>
-              {selectedTransAction && handleTransactionAmoun(selectedTransAction.transactionAmount)}
-            </Col>
-            <Col xs={6} md={4}>
-              {selectedTransAction && handleDeletedStatus(selectedTransAction.deleted)}
-            </Col>
-          </Row>
-        </Container>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant ="secondary" onClick={() => setModalInfoShow(false)}>Close</Button>
-      </Modal.Footer>
+            <Row>
+              <Col xs={6} md={4}>
+                Billing amount: {selectedTransAction && selectedTransAction.billingAmount.amount + selectedTransAction.billingAmount.currency}
+              </Col>
+              <Col xs={6} md={4}>
+                {selectedTransAction && handleTransactionAmoun(selectedTransAction.transactionAmount)}
+              </Col>
+              <Col xs={6} md={4}>
+                {selectedTransAction && handleDeletedStatus(selectedTransAction.deleted)}
+              </Col>
+            </Row>
+          </Container>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setModalInfoShow(false)}>Close</Button>
+        </Modal.Footer>
       </Modal>
 
-      <Modal show={modalDelteShow} onHide={() =>setModalDeleteShow(false)}>
+      <Modal show={modalDelteShow} onHide={() => setModalDeleteShow(false)}>
         <Modal.Header closeButton>
-    <Modal.Title>Do you want to delete transaction with ID:</Modal.Title>
+          <Modal.Title>Do you want to delete transaction with ID:</Modal.Title>
         </Modal.Header>
         <Modal.Body>{selectedTransAction && selectedTransAction.id}</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() =>setModalDeleteShow(false)}>
+          <Button variant="secondary" onClick={() => setModalDeleteShow(false)}>
             Close
           </Button>
-          <Button variant="danger" onClick={() =>deleteTransAction(selectedIndexForDelete)}>
+          <Button variant="danger" onClick={() => deleteTransAction(selectedIndexForDelete)}>
             Delete
           </Button>
-          
+
         </Modal.Footer>
       </Modal>
-      {loading && <Spinner animation="border" variant="primary" loading ={false}/>}
-      
+      {loading && <Spinner animation="border" variant="primary" loading={false} />}
+
     </div>
   );
 }

@@ -72,10 +72,10 @@ const handleStyleStatus = (status) => {
             return "#007bff"
             break;
         case "financial":
-            return "#78f892"    
+            return "#6BDAB0"    
             break;
         case "authorization":
-            return "#eb8e00"
+            return "#F7D2B6"
             break;
     }
 
